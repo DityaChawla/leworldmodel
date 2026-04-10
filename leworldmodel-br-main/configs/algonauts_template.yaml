@@ -1,0 +1,61 @@
+name: algonauts_template
+phase: v2
+seed: 7
+output_dir: runs/algonauts_template
+
+dataset:
+  kind: manifest
+  batch_size: 4
+  num_workers: 4
+  manifest_path: /absolute/path/to/train_manifest.jsonl
+  val_manifest_path: /absolute/path/to/val_manifest.jsonl
+  ood_manifest_path: /absolute/path/to/ood_manifest.jsonl
+  clip_len: 24
+  tr_frames: 4
+  frame_size: 224
+  frame_channels: 3
+  fmri_dim: 1000
+  num_subjects: 4
+
+model:
+  patch_size: 14
+  encoder_dim: 192
+  latent_dim: 192
+  encoder_layers: 8
+  encoder_heads: 6
+  predictor_layers: 6
+  predictor_heads: 6
+  predictor_mlp_ratio: 4.0
+  predictor_dropout: 0.1
+  projector_hidden_dim: 384
+  aligner_dim: 192
+  aligner_layers: 2
+  aligner_heads: 6
+  aligner_mlp_ratio: 4.0
+  aligner_dropout: 0.1
+  hrf_kernel_size: 4
+  hrf_learnable: true
+  brain_hidden_dim: 384
+  subject_embedding_dim: 32
+  trajectory_source: predictive
+
+loss:
+  lambda_sig: 0.05
+  lambda_brain: 0.1
+  lambda_temporal: 0.01
+  brain_mse_weight: 1.0
+  brain_corr_weight: 0.25
+
+optim:
+  epochs: 20
+  lr: 0.0001
+  weight_decay: 0.01
+  device: cuda
+
+ablation:
+  use_temporal_alignment: true
+  brain_on_slow_state: true
+  include_pred_loss: true
+  freeze_backbone: false
+  unfreeze_top_encoder_blocks: 1
+  use_subject_embedding: true

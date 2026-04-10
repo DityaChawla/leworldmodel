@@ -1,0 +1,64 @@
+name: v2_synthetic
+phase: v2
+seed: 7
+output_dir: runs/v2_synthetic
+
+dataset:
+  kind: synthetic
+  batch_size: 8
+  num_workers: 0
+  train_size: 96
+  val_size: 32
+  ood_size: 32
+  clip_len: 24
+  tr_frames: 4
+  frame_size: 32
+  frame_channels: 3
+  fmri_dim: 128
+  num_subjects: 4
+  synthetic_hidden_dim: 12
+  synthetic_noise_std: 0.08
+  synthetic_style_shift: 0.45
+
+model:
+  patch_size: 4
+  encoder_dim: 128
+  latent_dim: 96
+  encoder_layers: 4
+  encoder_heads: 4
+  predictor_layers: 4
+  predictor_heads: 4
+  predictor_mlp_ratio: 4.0
+  predictor_dropout: 0.1
+  projector_hidden_dim: 192
+  aligner_dim: 128
+  aligner_layers: 2
+  aligner_heads: 4
+  aligner_mlp_ratio: 4.0
+  aligner_dropout: 0.1
+  hrf_kernel_size: 4
+  hrf_learnable: true
+  brain_hidden_dim: 192
+  subject_embedding_dim: 32
+  trajectory_source: predictive
+
+loss:
+  lambda_sig: 0.05
+  lambda_brain: 0.2
+  lambda_temporal: 0.01
+  brain_mse_weight: 1.0
+  brain_corr_weight: 0.25
+
+optim:
+  epochs: 3
+  lr: 0.0003
+  weight_decay: 0.01
+  device: cpu
+
+ablation:
+  use_temporal_alignment: true
+  brain_on_slow_state: true
+  include_pred_loss: true
+  freeze_backbone: false
+  unfreeze_top_encoder_blocks: 1
+  use_subject_embedding: true
